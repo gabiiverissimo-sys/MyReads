@@ -1,7 +1,7 @@
 # livros_base.py
 
-from livro import Livro
-from acervo import Acervo
+from MyReads.services.livro import Livro
+from MyReads.services.acervo import Acervo
 
 acervo_global = Acervo()
 

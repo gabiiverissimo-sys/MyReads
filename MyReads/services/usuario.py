@@ -1,5 +1,5 @@
 import re
-from acervo import Acervo
+from MyReads.services.acervo import Acervo
 
 class Usuario:
     def __init__(self, nome, email, senha):

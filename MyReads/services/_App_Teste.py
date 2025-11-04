@@ -1,9 +1,9 @@
 import re
-from usuario import Usuario
-from ListaLeitura import ListaLeitura
-from LivrosBaseTestes import livros, get_livro_por_titulo
-from avaliacao import Avaliacao
-from Comentario import Comentario
+from MyReads.services.usuario import Usuario
+from MyReads.services.ListaLeitura import ListaLeitura
+from MyReads.services.LivrosBaseTestes import livros, get_livro_por_titulo
+from MyReads.services.avaliacao import Avaliacao
+from MyReads.services.Comentario import Comentario
 
 print("\n Seja bem-vindo(a) ao MyReads! ")
 

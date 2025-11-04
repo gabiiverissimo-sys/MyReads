@@ -1,4 +1,4 @@
-from ColecaoDeLivros import ColecaoDeLivros
+from MyReads.services.ColecaoDeLivros import ColecaoDeLivros
 
 class ListaLeitura(ColecaoDeLivros):
     def __init__(self, nome):
