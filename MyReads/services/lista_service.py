@@ -7,7 +7,7 @@ def criar_lista(usuario_id, nome):
     lista = ListaLeitura(nome=nome, usuario_id=usuario_id)
     db.add(lista)
     db.commit()
-    print(f"✅ Lista '{nome}' criada com sucesso!")
+    print(f" Lista '{nome}' criada com sucesso!")
 
 def adicionar_livro_na_lista(lista_id, livro_id):
     lista = db.query(ListaLeitura).get(lista_id)
@@ -15,7 +15,7 @@ def adicionar_livro_na_lista(lista_id, livro_id):
     if lista and livro:
         lista.livros.append(livro)
         db.commit()
-        print(f"📘 '{livro.titulo}' adicionado à lista '{lista.nome}'.")
+        print(f" '{livro.titulo}' adicionado à lista '{lista.nome}'.")
 
 def listar_listas_do_usuario(usuario_id):
     listas = db.query(ListaLeitura).filter_by(usuario_id=usuario_id).all()

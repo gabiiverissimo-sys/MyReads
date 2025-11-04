@@ -1,16 +1,26 @@
 from database import SessionLocal
-from models import Avaliacao, Comentario
+from models import Avaliacao, Livro, Usuario
 
-db = SessionLocal()
+def listar_avaliacoes_livro(livro_id):
+    db = SessionLocal()
+    livro = db.query(Livro).filter(Livro.id == livro_id).first()
 
-def avaliar_livro(usuario_id, livro_id, nota, texto=None):
-    avaliacao = Avaliacao(usuario_id=usuario_id, livro_id=livro_id, nota=nota, comentario=texto)
-    db.add(avaliacao)
-    db.commit()
-    print("✅ Avaliação registrada com sucesso!")
+    if not livro:
+        print(" Livro não encontrado.")
+        db.close()
+        return
 
-    if texto:
-        comentario = Comentario(usuario_id=usuario_id, livro_id=livro_id, texto=texto)
-        db.add(comentario)
-        db.commit()
-        print("💬 Comentário adicionado!")
+    avaliacoes = db.query(Avaliacao, Usuario).join(Usuario, Usuario.id == Avaliacao.usuario_id).filter(Avaliacao.livro_id == livro_id).all()
+
+    print(f"\n=== Avaliações de '{livro.titulo}' ===")
+    if not avaliacoes:
+        print(" Nenhuma avaliação encontrada para este livro.")
+    else:
+        for av, user in avaliacoes:
+            estrelas = "☆" * int(av.nota)
+            print(f"{user.nome} — Nota: {av.nota:.1f} {estrelas}")
+            if av.comentario:
+                print(f"✎ {av.comentario}")
+            print("-" * 40)
+
+    db.close()
