@@ -179,7 +179,7 @@ def ver_avaliacoes():
         return
 
 
-# MENU PRINCIPAL
+# menu
 while True:
     print("\n=== Menu Principal ===")
     print("1. Gerenciar Listas de Leitura")

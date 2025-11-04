@@ -1,0 +1,96 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// Prisma schema para o MyReads
+
+datasource db {
+  provider = "sqlite" // ou "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Usuario {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  email     String   @unique
+  senha     String
+  listas    ListaLeitura[]
+  acervo    Acervo?
+  avaliacoes Avaliacao[]
+  comentarios Comentario[]
+  criadoEm  DateTime @default(now())
+}
+
+model Livro {
+  id        Int      @id @default(autoincrement())
+  titulo    String
+  autor     String
+  genero    String
+  ano       Int
+  modelo    String   // físico ou digital
+  isbn      String?  @unique
+  status    String   @default("Quero ler")
+  notaMedia Float?   @default(0)
+  avaliacoes Avaliacao[]
+  comentarios Comentario[]
+  listas    LivrosNaLista[]
+  acervos   LivrosNoAcervo[]
+}
+
+model ListaLeitura {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id])
+  usuarioId Int
+  livros    LivrosNaLista[]
+}
+
+model LivrosNaLista {
+  id        Int      @id @default(autoincrement())
+  livro     Livro    @relation(fields: [livroId], references: [id])
+  livroId   Int
+  lista     ListaLeitura @relation(fields: [listaId], references: [id])
+  listaId   Int
+}
+
+model Acervo {
+  id        Int      @id @default(autoincrement())
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id])
+  usuarioId Int
+  livros    LivrosNoAcervo[]
+}
+
+model LivrosNoAcervo {
+  id        Int      @id @default(autoincrement())
+  livro     Livro    @relation(fields: [livroId], references: [id])
+  livroId   Int
+  acervo    Acervo   @relation(fields: [acervoId], references: [id])
+  acervoId  Int
+  tipo      String   // 'desejado' ou 'possuido'
+}
+
+model Avaliacao {
+  id        Int      @id @default(autoincrement())
+  nota      Float
+  comentario String?
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id])
+  usuarioId Int
+  livro     Livro    @relation(fields: [livroId], references: [id])
+  livroId   Int
+  criadoEm  DateTime @default(now())
+}
+
+model Comentario {
+  id        Int      @id @default(autoincrement())
+  texto     String
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id])
+  usuarioId Int
+  livro     Livro    @relation(fields: [livroId], references: [id])
+  livroId   Int
+  criadoEm  DateTime @default(now())
+}
